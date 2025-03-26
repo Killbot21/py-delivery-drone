@@ -1,19 +1,15 @@
 from typing import List, Optional
 
-
 class Cargo:
     def __init__(self, weight: int) -> None:
         self.weight: int = weight
 
-
 class BaseRobot:
     def __init__(self, name: str, weight: int,
                  coords: Optional[List[int]] = None) -> None:
-        if coords is None:
-            coords = [0, 0]
         self.name: str = name
         self.weight: int = weight
-        self.coords: List[int] = coords
+        self.coords: List[int] = coords or [0, 0]
 
     def go_forward(self, step: int = 1) -> None:
         self.coords[1] += step
@@ -30,20 +26,17 @@ class BaseRobot:
     def get_info(self) -> str:
         return f"Robot: {self.name}, Weight: {self.weight}"
 
-
 class FlyingRobot(BaseRobot):
     def __init__(self, name: str, weight: int,
                  coords: Optional[List[int]] = None) -> None:
-        if coords is None:
-            coords = [0, 0, 0]
-        super().__init__(name, weight, coords)
+        self.coords: List[int] = coords or [0, 0, 0]
+        super().__init__(name, weight, self.coords[:2])
 
     def go_up(self, step: int = 1) -> None:
         self.coords[2] += step
 
     def go_down(self, step: int = 1) -> None:
         self.coords[2] -= step
-
 
 class DeliveryDrone(FlyingRobot):
     def __init__(self, name: str, weight: int, max_load_weight: int,
